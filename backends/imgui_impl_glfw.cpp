@@ -812,6 +812,16 @@ static void ImGui_ImplGlfw_UpdateMouseCursor()
         }
         else
         {
+            // Hack for showing the top resize icon properly in custom titlebar mode
+            if (glfwGetWindowAttrib(window, GLFW_TITLEBAR) == GLFW_FALSE)
+            {
+                double mouse_x, mouse_y;
+                glfwGetCursorPos(window, &mouse_x, &mouse_y);
+                if (mouse_y < 4)
+                {
+                    return;
+                }
+            }
             // Show OS mouse cursor
             // FIXME-PLATFORM: Unfocused windows seems to fail changing the mouse cursor with GLFW 3.2, but 3.3 works here.
             glfwSetCursor(window, bd->MouseCursors[imgui_cursor] ? bd->MouseCursors[imgui_cursor] : bd->MouseCursors[ImGuiMouseCursor_Arrow]);
